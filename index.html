@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Сырьё для маркетинга · Библиотека находок AI R&D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Azeret+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+<style>
+:root{
+  --font-body:'Plus Jakarta Sans',system-ui,sans-serif;
+  --font-mono:'Azeret Mono','SF Mono',monospace;
+  --font-serif:'Instrument Serif',Georgia,serif;
+  --bg:#faf6f0;
+  --surface:#ffffff;
+  --surface2:#f5ece0;
+  --surface-elevated:#fffdf5;
+  --border:rgba(60,40,20,0.08);
+  --border-bright:rgba(60,40,20,0.16);
+  --text:#2c2a25;
+  --text-dim:#7c756a;
+  --accent:#c2410c;
+  --accent-2:#e8751a;
+  --accent-dim:rgba(194,65,12,0.08);
+  --code-bg:#2c2520;
+  --code-text:#f5ece0;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--font-body);-webkit-font-smoothing:antialiased}
+.deck{height:100dvh;overflow-y:auto;scroll-snap-type:y mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+.slide{height:100dvh;scroll-snap-align:start;overflow:hidden;position:relative;display:flex;flex-direction:column;justify-content:center;padding:clamp(40px,6vh,80px) clamp(40px,8vw,120px);isolation:isolate;
+  opacity:0;transform:translateY(40px) scale(0.98);transition:opacity .6s cubic-bezier(.16,1,.3,1),transform .6s cubic-bezier(.16,1,.3,1);}
+.slide.visible{opacity:1;transform:none}
+.slide .reveal{opacity:0;transform:translateY(20px);transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1)}
+.slide.visible .reveal{opacity:1;transform:none}
+.slide.visible .reveal:nth-child(1){transition-delay:.1s}
+.slide.visible .reveal:nth-child(2){transition-delay:.2s}
+.slide.visible .reveal:nth-child(3){transition-delay:.3s}
+.slide.visible .reveal:nth-child(4){transition-delay:.4s}
+.slide.visible .reveal:nth-child(5){transition-delay:.5s}
+.slide.visible .reveal:nth-child(6){transition-delay:.6s}
+.slide.visible .reveal:nth-child(7){transition-delay:.7s}
+.slide.visible .reveal:nth-child(8){transition-delay:.8s}
+@media (prefers-reduced-motion:reduce){.slide,.slide .reveal{opacity:1!important;transform:none!important;transition:none!important}}
+
+/* Per-slide ambient glow */
+.slide:nth-child(odd){background-image:radial-gradient(ellipse at 15% 85%,rgba(232,117,26,0.10) 0%,transparent 55%)}
+.slide:nth-child(even){background-image:radial-gradient(ellipse at 85% 15%,rgba(194,65,12,0.08) 0%,transparent 55%)}
+
+/* Typography */
+.slide__display{font-size:clamp(48px,9vw,118px);font-weight:800;letter-spacing:-3px;line-height:.95;text-wrap:balance;margin:0}
+.slide__display em{font-family:var(--font-serif);font-style:italic;font-weight:400;color:var(--accent);letter-spacing:-1px}
+.slide__heading{font-size:clamp(28px,5vw,52px);font-weight:700;letter-spacing:-1px;line-height:1.08;text-wrap:balance;margin:0 0 clamp(12px,2vh,24px)}
+.slide__heading em{font-family:var(--font-serif);font-style:italic;font-weight:400;color:var(--accent)}
+.slide__body{font-size:clamp(16px,2.1vw,22px);line-height:1.6;color:var(--text-dim);text-wrap:pretty;margin:0}
+.slide__label{font-family:var(--font-mono);font-size:clamp(10px,1.15vw,13px);font-weight:600;text-transform:uppercase;letter-spacing:1.8px;color:var(--accent);margin:0 0 clamp(12px,2vh,20px)}
+.slide__subtitle{font-family:var(--font-mono);font-size:clamp(13px,1.6vw,18px);color:var(--text-dim);letter-spacing:.5px;margin:clamp(16px,3vh,32px) 0 0}
+.slide__number{font-size:clamp(100px,24vw,280px);font-weight:200;line-height:.85;opacity:.09;position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);pointer-events:none;font-variant-numeric:tabular-nums;color:var(--accent);font-family:var(--font-serif);font-style:italic}
+
+/* Title slide */
+.slide--title{justify-content:center;align-items:flex-start;text-align:left}
+.slide--title .slide__display{max-width:14ch}
+.slide--title .stamp{position:absolute;top:clamp(32px,5vh,60px);right:clamp(32px,5vw,60px);display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim)}
+.slide--title .stamp::before{content:'';width:10px;height:10px;background:var(--accent);border-radius:50%}
+.slide--title .meta{position:absolute;bottom:clamp(32px,5vh,60px);left:clamp(40px,8vw,120px);right:clamp(40px,8vw,120px);display:flex;justify-content:space-between;align-items:flex-end;gap:24px;font-family:var(--font-mono);font-size:12px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase}
+.slide--title .meta strong{color:var(--text);display:block;font-weight:600;margin-top:4px;font-size:14px}
+
+/* Divider slide */
+.slide--divider{justify-content:center;align-items:flex-start}
+.slide--divider .slide__content{position:relative;z-index:1;max-width:20ch}
+
+/* Content */
+.slide--content .slide__inner{display:grid;grid-template-columns:3fr 2fr;gap:clamp(32px,5vw,72px);align-items:center;width:100%;position:relative;z-index:1}
+.slide--content.right-heavy .slide__inner{grid-template-columns:2fr 3fr}
+.slide--content .slide__bullets{list-style:none;padding:0;margin:clamp(12px,2vh,24px) 0 0}
+.slide--content .slide__bullets li{padding:10px 0 10px 24px;position:relative;font-size:clamp(16px,2vw,22px);line-height:1.55;color:var(--text);border-bottom:1px dashed var(--border)}
+.slide--content .slide__bullets li:last-child{border-bottom:none}
+.slide--content .slide__bullets li::before{content:'';position:absolute;left:0;top:20px;width:10px;height:2px;background:var(--accent)}
+.slide--content .slide__bullets li small{display:block;font-family:var(--font-mono);font-size:clamp(10px,1.15vw,12px);color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-top:4px;font-weight:500}
+
+/* Aside card */
+.aside-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:clamp(20px,3vh,36px);position:relative;overflow:hidden}
+.aside-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.aside-card h4{font-family:var(--font-mono);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin:0 0 10px}
+.aside-card p{margin:0;font-size:clamp(14px,1.5vw,17px);line-height:1.5;color:var(--text)}
+.aside-card .big{font-size:clamp(40px,6vw,72px);font-weight:800;letter-spacing:-2px;line-height:1;color:var(--text);font-variant-numeric:tabular-nums;margin:10px 0 0;font-family:var(--font-serif);font-style:italic}
+.aside-card .big em{color:var(--accent);font-style:normal}
+
+/* Split slide */
+.slide--split{padding:0}
+.slide--split .slide__panels{display:grid;grid-template-columns:1fr 1fr;height:100%}
+.slide--split .slide__panel{padding:clamp(40px,6vh,80px) clamp(32px,4vw,64px);display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+.slide--split .slide__panel--primary{background:var(--surface)}
+.slide--split .slide__panel--secondary{background:var(--surface2)}
+.slide--split .slide__panel::before{content:'';position:absolute;top:0;left:0;width:64px;height:4px;background:var(--accent)}
+.slide--split .panel-num{font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px}
+.slide--split h3{font-size:clamp(22px,3.4vw,40px);font-weight:700;line-height:1.1;margin:0 0 18px;letter-spacing:-0.8px}
+.slide--split ul{list-style:none;padding:0;margin:0}
+.slide--split li{padding:8px 0 8px 22px;position:relative;font-size:clamp(14px,1.6vw,18px);color:var(--text-dim);line-height:1.55}
+.slide--split li::before{content:'→';position:absolute;left:0;color:var(--accent);font-weight:700}
+.slide--split li strong{color:var(--text);font-weight:600}
+
+/* Dashboard */
+.slide--dashboard .slide__kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,24px);margin-top:clamp(16px,3vh,32px);position:relative;z-index:1}
+.slide__kpi{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:clamp(20px,3.5vh,36px) clamp(18px,2.2vw,28px);min-width:0;overflow:hidden;position:relative}
+.slide__kpi::after{content:'';position:absolute;top:0;right:0;width:40px;height:40px;background:radial-gradient(circle at top right,var(--accent-dim),transparent 70%)}
+.slide__kpi-val{font-size:clamp(40px,6vw,72px);font-weight:800;letter-spacing:-2px;line-height:1;font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--accent);font-family:var(--font-serif);font-style:italic}
+.slide__kpi-val span{font-size:.5em;color:var(--text);font-style:normal;font-family:var(--font-body);margin-left:4px;letter-spacing:-1px}
+.slide__kpi-label{font-family:var(--font-mono);font-size:clamp(10px,1.1vw,12px);font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-dim);margin-top:12px;line-height:1.4}
+.slide__kpi-sub{font-size:13px;color:var(--text);margin-top:6px;font-weight:500}
+
+/* Pipeline */
+.pipeline{display:flex;align-items:stretch;gap:0;flex:1;min-height:0;margin-top:clamp(14px,2.5vh,26px);position:relative;z-index:1}
+.pipeline__step{flex:1;background:var(--surface);border:1px solid var(--border);border-top:3px solid var(--accent);border-radius:10px;padding:clamp(16px,2.6vh,28px) clamp(12px,1.5vw,22px);display:flex;flex-direction:column;min-width:0;overflow-wrap:break-word}
+.pipeline__num{font-size:clamp(10px,1.2vw,12px);font-weight:600;color:var(--accent);letter-spacing:1.5px;font-family:var(--font-mono)}
+.pipeline__name{font-size:clamp(15px,1.8vw,22px);font-weight:700;margin:6px 0 8px;line-height:1.15;letter-spacing:-.5px}
+.pipeline__desc{font-size:clamp(11px,1.2vw,15px);color:var(--text-dim);line-height:1.5;flex:1}
+.pipeline__file{font-size:clamp(10px,1vw,11px);color:var(--accent);background:var(--accent-dim);padding:4px 9px;border-radius:4px;margin-top:12px;align-self:flex-start;font-family:var(--font-mono);font-weight:600;letter-spacing:.3px}
+.pipeline__arrow{display:flex;align-items:center;padding:0 clamp(3px,.4vw,6px);color:var(--accent);flex-shrink:0;opacity:.5}
+@media (max-width:900px){.pipeline{flex-direction:column}.pipeline__arrow{justify-content:center;padding:4px 0;transform:rotate(90deg)}}
+
+/* Tree / file list */
+.tree{font-family:var(--font-mono);font-size:clamp(12px,1.35vw,16px);line-height:1.85;color:var(--text);background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:clamp(18px,3vh,32px) clamp(22px,3vw,40px);box-shadow:0 1px 0 rgba(0,0,0,0.02)}
+.tree .folder{color:var(--accent);font-weight:600}
+.tree .file{color:var(--text-dim)}
+.tree .hl{color:var(--text);font-weight:600}
+.tree .annotate{color:var(--text-dim);font-size:.85em;margin-left:8px;font-style:italic;font-family:var(--font-serif)}
+.tree .l1{padding-left:0}
+.tree .l2{padding-left:20px}
+.tree .l3{padding-left:40px}
+.tree .l4{padding-left:60px}
+
+/* Quote */
+.slide--quote{justify-content:center;align-items:center;text-align:center;padding:clamp(60px,10vh,120px) clamp(60px,12vw,200px)}
+.slide--quote .mark{font-size:clamp(100px,16vw,220px);line-height:.4;opacity:.12;font-family:var(--font-serif);color:var(--accent);margin-bottom:-30px;pointer-events:none}
+.slide--quote blockquote{font-size:clamp(26px,4.2vw,54px);font-weight:400;line-height:1.3;font-style:italic;margin:0;font-family:var(--font-serif);max-width:22ch}
+.slide--quote cite{font-family:var(--font-mono);font-size:clamp(11px,1.3vw,13px);font-style:normal;margin-top:clamp(24px,4vh,44px);display:block;letter-spacing:1.8px;text-transform:uppercase;color:var(--text-dim)}
+.slide--quote cite strong{color:var(--accent);font-weight:600}
+
+/* Closing */
+.slide--closing{justify-content:center;align-items:flex-start}
+.slide--closing .big{font-size:clamp(40px,7vw,88px);font-weight:800;letter-spacing:-2.5px;line-height:1;max-width:16ch}
+.slide--closing .big em{font-family:var(--font-serif);font-style:italic;font-weight:400;color:var(--accent)}
+.slide--closing .asks{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(14px,2vw,24px);margin-top:clamp(32px,5vh,60px)}
+.slide--closing .ask{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:10px;padding:clamp(18px,3vh,28px)}
+.slide--closing .ask .n{font-family:var(--font-mono);font-size:11px;color:var(--accent);letter-spacing:1.5px;font-weight:600}
+.slide--closing .ask .t{font-size:clamp(16px,1.8vw,20px);font-weight:700;margin:8px 0 6px;line-height:1.25}
+.slide--closing .ask .d{font-size:13px;color:var(--text-dim);line-height:1.5;margin:0}
+
+/* Nav chrome */
+.deck-progress{position:fixed;top:0;left:0;height:3px;background:var(--accent);z-index:100;transition:width .3s ease;pointer-events:none}
+.deck-dots{position:fixed;right:clamp(12px,1.8vw,22px);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px;z-index:100;background:color-mix(in srgb,var(--bg) 70%,transparent);padding:8px 6px;border-radius:20px;backdrop-filter:blur(4px)}
+.deck-dot{width:8px;height:8px;border-radius:50%;background:var(--text-dim);opacity:.3;border:none;padding:0;cursor:pointer;transition:opacity .2s,transform .2s}
+.deck-dot:hover{opacity:.6}
+.deck-dot.active{opacity:1;transform:scale(1.5);background:var(--accent)}
+.deck-counter{position:fixed;bottom:clamp(12px,2vh,22px);right:clamp(12px,2vw,22px);font-family:var(--font-mono);font-size:11px;color:var(--text-dim);z-index:100;font-variant-numeric:tabular-nums;letter-spacing:1px}
+.deck-hints{position:fixed;bottom:clamp(12px,2vh,22px);left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:10px;color:var(--text-dim);opacity:.6;z-index:100;transition:opacity .5s;white-space:nowrap;letter-spacing:1px;text-transform:uppercase}
+.deck-hints.faded{opacity:0;pointer-events:none}
+.brand-lock{position:fixed;top:clamp(12px,2vh,22px);left:clamp(12px,2vw,22px);font-family:var(--font-mono);font-size:10px;color:var(--text-dim);z-index:100;letter-spacing:1.8px;text-transform:uppercase;font-weight:600}
+.brand-lock span{color:var(--accent)}
+
+@media (max-height:700px){
+  .slide{padding:clamp(24px,4vh,48px) clamp(32px,6vw,80px)}
+  .slide__display{font-size:clamp(36px,8vw,80px)}
+  .slide__number{font-size:clamp(80px,18vw,180px)}
+}
+@media (max-width:900px){
+  .slide--content .slide__inner{grid-template-columns:1fr}
+  .slide--content .slide__aside{display:none}
+  .slide--split .slide__panels{grid-template-columns:1fr}
+  .slide--dashboard .slide__kpis{grid-template-columns:repeat(2,1fr)}
+  .slide--closing .asks{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="brand-lock">AGIMA<span>·</span>AI&nbsp;R&D</div>
+
+<div class="deck">
+
+<!-- 1. TITLE -->
+<section class="slide slide--title">
+  <svg style="position:absolute;top:0;right:0;pointer-events:none;opacity:.45" width="360" height="360" viewBox="0 0 360 360">
+    <circle cx="260" cy="100" r="140" fill="none" stroke="var(--accent)" stroke-width="1" opacity=".25"/>
+    <circle cx="260" cy="100" r="90" fill="none" stroke="var(--accent)" stroke-width="1" opacity=".35"/>
+    <circle cx="260" cy="100" r="40" fill="var(--accent)" opacity=".1"/>
+    <line x1="0" y1="260" x2="360" y2="260" stroke="var(--accent)" stroke-width="1" opacity=".2"/>
+  </svg>
+  <div class="stamp">Internal · confidential</div>
+  <div class="reveal">
+    <p class="slide__label">Встреча с маркетинг-директором · 2026-04-13</p>
+    <h1 class="slide__display">Сырьё для <em>маркетинга</em>.<br>Что у нас уже есть.</h1>
+  </div>
+  <div class="meta">
+    <div>Куратор<strong>Виталий Дощенко · AI R&D</strong></div>
+    <div>Источник<strong>agima-ai-vault / 3 Маркетинг</strong></div>
+    <div>Версия<strong>Sprint 0 + Sprint 1</strong></div>
+  </div>
+</section>
+
+<!-- 2. WHY / GOALS -->
+<section class="slide slide--content">
+  <div class="slide__inner">
+    <div>
+      <p class="slide__label reveal">01 · Зачем это существует</p>
+      <h2 class="slide__heading reveal">Цель маркетингового потока —<br>запустить <em>кейс-машину</em>.</h2>
+      <ul class="slide__bullets">
+        <li class="reveal">Статьи, демо, разборы, вебинары, выступления<small>регулярный выход, не разовые акции</small></li>
+        <li class="reveal">Показывать внедрения на итогах недели и в OKR-канале<small>внутренняя петля доверия</small></li>
+        <li class="reveal">Proof of work наружу: кейсы, экспертиза, ивенты, комьюнити<small>подтверждение через факт, не обещания</small></li>
+      </ul>
+    </div>
+    <div class="slide__aside reveal">
+      <div class="aside-card">
+        <h4>Главный принцип</h4>
+        <p class="big">каждая<br>задача<br>→ <em>сырьё</em></p>
+        <p style="margin-top:14px;color:var(--text-dim);font-size:14px">Каждый разработческий спринт производит не только код, но и материал для контента.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. WHERE / PATH -->
+<section class="slide">
+  <p class="slide__label reveal">02 · Где это лежит</p>
+  <h2 class="slide__heading reveal">Одна папка. Синхронизируется<br>в GitLab автоматически.</h2>
+  <div class="reveal" style="margin-top:clamp(20px,3.5vh,40px);display:grid;grid-template-columns:1fr;gap:18px;max-width:1100px">
+    <div style="background:var(--code-bg);color:var(--code-text);font-family:var(--font-mono);font-size:clamp(13px,1.55vw,18px);padding:clamp(22px,3.5vh,38px) clamp(24px,3vw,40px);border-radius:12px;position:relative;line-height:1.8;overflow:auto">
+      <span style="position:absolute;top:-11px;left:22px;font-size:10px;background:var(--accent);color:#fff;padding:4px 10px;border-radius:4px;letter-spacing:1.5px;font-weight:600">LOCAL PATH</span>
+      ~/Documents/ai&nbsp;rnd/agima-ai-vault/<br>
+      &nbsp;&nbsp;<span style="color:#ffb270">3&nbsp;Маркетинг/</span><br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─&nbsp;<span style="color:#ffb270">Сырье&nbsp;для&nbsp;Маркетинга/</span>&nbsp;&nbsp;<span style="opacity:.55"># &lt;— сюда складываем всё</span>
+    </div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 24px;display:flex;gap:24px;flex-wrap:wrap;font-family:var(--font-mono);font-size:13px;color:var(--text-dim)">
+      <span><strong style="color:var(--accent)">GitLab&nbsp;·</strong>&nbsp;gitlab.agimagroup.ru/ai_randd/agima-ai-vault</span>
+      <span><strong style="color:var(--accent)">Sync&nbsp;·</strong>&nbsp;obsidian-git, авто-push</span>
+      <span><strong style="color:var(--accent)">Доступ&nbsp;·</strong>&nbsp;read-only для маркетинга</span>
+    </div>
+  </div>
+</section>
+
+<!-- 4. STRUCTURE TREE (split) -->
+<section class="slide slide--split">
+  <div class="slide__panels">
+    <div class="slide__panel slide__panel--primary">
+      <div class="panel-num">03 · Структура</div>
+      <h3>Два спринта,<br>одна цель-файл.</h3>
+      <p style="font-size:clamp(14px,1.55vw,18px);color:var(--text-dim);line-height:1.6;margin:10px 0 0;max-width:38ch">Sprint 0 — калибровочный, одна статья-артефакт. Sprint 1 — полный недельный спринт с двумя треками: инфраструктура и карьерные сайты.</p>
+    </div>
+    <div class="slide__panel slide__panel--secondary" style="padding:clamp(28px,5vh,56px) clamp(28px,3.5vw,52px)">
+      <div class="tree">
+<div class="l1 folder">Сырье для Маркетинга/</div>
+<div class="l2 file">├─ <span class="hl">Цели.md</span> <span class="annotate">3 цели маркетинга</span></div>
+<div class="l2 folder">├─ Sprint 0 — калибровка/</div>
+<div class="l3 file">│&nbsp;&nbsp;&nbsp;└─ {article} Obsidian как мозг для AI-ботов.html</div>
+<div class="l2 folder">└─ Sprint 1/</div>
+<div class="l3 folder">&nbsp;&nbsp;&nbsp;├─ Инфраструктура/</div>
+<div class="l4 file">&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├─ Architecture journey.md</div>
+<div class="l4 file">&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├─ Decision tracker.md</div>
+<div class="l4 file">&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;├─ Sprint Journal.md</div>
+<div class="l4 file">&nbsp;&nbsp;&nbsp;│&nbsp;&nbsp;&nbsp;└─ Транскрипты/ <span class="annotate">×21 встреча</span></div>
+<div class="l3 folder">&nbsp;&nbsp;&nbsp;└─ Кейс: Карьерные сайты/</div>
+<div class="l4 file">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ Как превратить макет в артефакт.md</div>
+<div class="l4 file">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├─ Регламент подготовки макетов.md</div>
+<div class="l4 file">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└─ Чеклист для приемки макетов.md</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. DIVIDER Sprint 0 -->
+<section class="slide slide--divider">
+  <span class="slide__number">0</span>
+  <div class="slide__content reveal">
+    <p class="slide__label">Блок&nbsp;I</p>
+    <h2 class="slide__heading">Sprint 0 —<br><em>калибровка</em></h2>
+    <p class="slide__body" style="margin-top:14px;max-width:30ch">Три дня до первого нормального спринта. Один артефакт — но именно он задал стандарт формата.</p>
+  </div>
+</section>
+
+<!-- 6. Sprint 0 content -->
+<section class="slide slide--content right-heavy">
+  <div class="slide__inner">
+    <div class="slide__aside reveal">
+      <div class="aside-card" style="background:linear-gradient(160deg,var(--surface) 0%,var(--surface2) 100%)">
+        <h4>Артефакт</h4>
+        <p style="font-family:var(--font-serif);font-style:italic;font-size:clamp(22px,3vw,36px);line-height:1.2;margin:14px 0 6px;color:var(--text)">«Obsidian как мозг для AI-ботов»</p>
+        <p style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;margin:10px 0 0">HTML · готовый к публикации</p>
+        <p style="margin-top:16px;font-size:14px;line-height:1.5">Длинная статья про файловую систему как источник знаний для агентов — тезис Глеба Сидоры.</p>
+      </div>
+    </div>
+    <div>
+      <p class="slide__label reveal">Что можно сделать уже сейчас</p>
+      <h2 class="slide__heading reveal">Готовый<br>черновик статьи.</h2>
+      <ul class="slide__bullets">
+        <li class="reveal">Редакторская правка + вёрстка в блог<small>формат уже подходит под публикацию</small></li>
+        <li class="reveal">Нарезка на 4–5 постов в TG / LinkedIn<small>тезисно + примеры команд</small></li>
+        <li class="reveal">Доклад на митап / внутренний shareback<small>20 минут, есть структура</small></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 7. DIVIDER Sprint 1 -->
+<section class="slide slide--divider">
+  <span class="slide__number">1</span>
+  <div class="slide__content reveal">
+    <p class="slide__label">Блок&nbsp;II</p>
+    <h2 class="slide__heading">Sprint 1 —<br>первый <em>полный</em> спринт</h2>
+    <p class="slide__body" style="margin-top:14px;max-width:34ch">Две недели работы, два параллельных трека. Всё сложено и отсортировано по темам.</p>
+  </div>
+</section>
+
+<!-- 8. Two tracks split -->
+<section class="slide slide--split">
+  <div class="slide__panels">
+    <div class="slide__panel slide__panel--primary">
+      <div class="panel-num">Трек&nbsp;A</div>
+      <h3>Инфраструктура<br>AI-платформы</h3>
+      <p style="color:var(--text-dim);font-size:clamp(14px,1.6vw,18px);line-height:1.55;margin:6px 0 18px;max-width:36ch">Как построена платформа, какие решения приняли, через что прошли.</p>
+      <ul>
+        <li><strong>Architecture journey</strong> — путь от «Мегатрона» до MVP</li>
+        <li><strong>Decision tracker</strong> — решения с цитатами и эволюцией</li>
+        <li><strong>Sprint Journal</strong> — хронология встреч и людей</li>
+        <li><strong>Транскрипты</strong> — 21 расшифровка планёрок и ревью</li>
+      </ul>
+    </div>
+    <div class="slide__panel slide__panel--secondary">
+      <div class="panel-num">Трек&nbsp;B</div>
+      <h3>Кейс:<br>карьерные сайты</h3>
+      <p style="color:var(--text-dim);font-size:clamp(14px,1.6vw,18px);line-height:1.55;margin:6px 0 18px;max-width:36ch">Сделали методичку по handoff макетов — и упаковали её как готовый экспертный материал.</p>
+      <ul>
+        <li><strong>Как превратить макет в артефакт</strong> — точка входа</li>
+        <li><strong>Регламент подготовки макетов</strong> — требования к дизайну</li>
+        <li><strong>Чеклист для приёмки</strong> — как проверить, можно ли брать в разработку</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 9. Architecture journey content -->
+<section class="slide slide--content">
+  <div class="slide__inner">
+    <div>
+      <p class="slide__label reveal">Track A · Architecture journey.md</p>
+      <h2 class="slide__heading reveal">История «как построили»<br>со всеми <em>разворотами</em>.</h2>
+      <ul class="slide__bullets">
+        <li class="reveal">Первая версия — «космолёт» с pgvector, Natasha на каждый запрос, S3 для всего<small>полноценная 6-слойная модель</small></li>
+        <li class="reveal">Ревью Виталия: «не надо так, сделайте минимальный результат»<small>19 принятых решений, 8 ADR</small></li>
+        <li class="reveal">Финал — MVP: LiteLLM + NemoClaw + ClickHouse + MCP Skills<small>агенты читают через CDC-витрины, пишут через API</small></li>
+        <li class="reveal">Бизнес-кейс отгрузок — конкретный сценарий, который продавал архитектуру<small>alert в Mattermost, если РП не внёс факт</small></li>
+      </ul>
+    </div>
+    <div class="slide__aside reveal">
+      <div class="aside-card">
+        <h4>Формат файла</h4>
+        <p class="big"><em>1</em><span style="font-size:.3em;color:var(--text);font-family:var(--font-body);font-style:normal;margin-left:4px">длинный .md</span></p>
+        <p style="margin-top:12px;font-size:13px;color:var(--text-dim);line-height:1.5">~6 разделов с таблицами, схемами, цитатами. Автор — Назар Башинский. Готов к переработке в статью или доклад.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10. QUOTE -->
+<section class="slide slide--quote">
+  <div class="mark reveal">&ldquo;</div>
+  <blockquote class="reveal">Это космическая ракета Мегатрон. Не надо так — делайте минимальный результат.</blockquote>
+  <cite class="reveal"><strong>Виталий Дощенко</strong> &nbsp;·&nbsp; Review, 02.04.2026 &nbsp;·&nbsp; Decision Tracker, эпизод №4</cite>
+</section>
+
+<!-- 11. DASHBOARD sprint stats -->
+<section class="slide slide--dashboard">
+  <p class="slide__label reveal">Track A · Sprint Journal · факты</p>
+  <h2 class="slide__heading reveal">Что стоит за этим спринтом.</h2>
+  <div class="slide__kpis">
+    <div class="slide__kpi reveal"><div class="slide__kpi-val">20<span>встреч</span></div><div class="slide__kpi-label">уникальные синки</div><div class="slide__kpi-sub">Planning · Daily · Tech · Review</div></div>
+    <div class="slide__kpi reveal"><div class="slide__kpi-val">12<span>ч 30</span></div><div class="slide__kpi-label">суммарно записей</div><div class="slide__kpi-sub">всё расшифровано</div></div>
+    <div class="slide__kpi reveal"><div class="slide__kpi-val">9<span>людей</span></div><div class="slide__kpi-label">расширенный состав</div><div class="slide__kpi-sub">ядро · 5 человек</div></div>
+    <div class="slide__kpi reveal"><div class="slide__kpi-val">19<span>решений</span></div><div class="slide__kpi-label">по архитектуре</div><div class="slide__kpi-sub">из них 8 → ADR</div></div>
+    <div class="slide__kpi reveal"><div class="slide__kpi-val">4<span>типа</span></div><div class="slide__kpi-label">агентов на платформе</div><div class="slide__kpi-sub">cron · on-demand · event · mirror</div></div>
+    <div class="slide__kpi reveal"><div class="slide__kpi-val">3<span>слоя</span></div><div class="slide__kpi-label">данных в ClickHouse</div><div class="slide__kpi-sub">raw → processed → marts</div></div>
+  </div>
+</section>
+
+<!-- 12. Decision tracker -->
+<section class="slide slide--content right-heavy">
+  <div class="slide__inner">
+    <div class="slide__aside reveal">
+      <div class="aside-card">
+        <h4>Decision tracker · пример</h4>
+        <p style="font-family:var(--font-serif);font-style:italic;font-size:clamp(16px,1.8vw,21px);line-height:1.35;color:var(--text);margin:12px 0">«Bit&nbsp;Frost… бинарный, как будто бы проще. Меня просто смутил Питон, на него нужна жирная тачка»</p>
+        <p style="font-family:var(--font-mono);font-size:11px;color:var(--text-dim);letter-spacing:1px;margin:0">Назар · деплой v1 LLM Gateway</p>
+        <div style="margin-top:14px;padding-top:14px;border-top:1px dashed var(--border);font-size:12px;color:var(--text-dim);line-height:1.5">Дальше — миграция на LiteLLM, нестабильность, компромисс с Grafana. Вся эволюция в одной таблице.</div>
+      </div>
+    </div>
+    <div>
+      <p class="slide__label reveal">Track A · Decision tracker.md</p>
+      <h2 class="slide__heading reveal">Решения с <em>цитатами</em><br>и эволюцией.</h2>
+      <ul class="slide__bullets">
+        <li class="reveal">Каждое решение — таблица «этап → кто → цитата»<small>не «что решили», а «как к этому пришли»</small></li>
+        <li class="reveal">Плюс баги, блокеры и болезненные фиксы<small>готовые «лицо в грязь» истории для честных кейсов</small></li>
+        <li class="reveal">Источник для постов в духе «как мы мигрировали»<small>живой голос, не причёсанная документация</small></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 13. Transcripts -->
+<section class="slide slide--content">
+  <div class="slide__inner">
+    <div>
+      <p class="slide__label reveal">Track A · Транскрипты/ ×21</p>
+      <h2 class="slide__heading reveal">Сырьё <em>самого нижнего</em> уровня.</h2>
+      <ul class="slide__bullets">
+        <li class="reveal">21 расшифровка встреч — планирования, дейли, ретро, ревью<small>снято через Plaud, автоматическая разбивка</small></li>
+        <li class="reveal">Голос реальных людей, реальные споры<small>из них уже «выжаты» Decision tracker и Journal</small></li>
+        <li class="reveal">Можно искать цитаты под любой нужный тезис<small>маркетингу на вход — в виде библиотеки, не для публикации</small></li>
+      </ul>
+    </div>
+    <div class="slide__aside reveal">
+      <div class="aside-card">
+        <h4>Использование</h4>
+        <p style="font-family:var(--font-serif);font-style:italic;font-size:clamp(20px,2.6vw,30px);line-height:1.3;margin:10px 0 12px">не&nbsp;для<br>публикации —<br>для <em>поиска цитат</em>.</p>
+        <p style="font-size:13px;color:var(--text-dim);line-height:1.5;margin:0">Личные формулировки, вырванные из контекста, не идут наружу без согласия.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 14. Track B — careers case -->
+<section class="slide slide--content">
+  <div class="slide__inner">
+    <div>
+      <p class="slide__label reveal">Track B · Кейс о карьерных сайтах</p>
+      <h2 class="slide__heading reveal">Методичка, которую можно<br>продавать <em>как продукт</em>.</h2>
+      <ul class="slide__bullets">
+        <li class="reveal">«Как превратить макет в инженерный артефакт» — точка входа, с примерами из Figma<small>6 зон покрытия: брейкпоинты, компоненты, состояния, графика…</small></li>
+        <li class="reveal">Регламент подготовки макетов — что должно быть внутри<small>для дизайнеров клиента / партнёров</small></li>
+        <li class="reveal">Чеклист для приёмки — go / no-go перед передачей в разработку<small>готовый инструмент, можно приложить к договору</small></li>
+      </ul>
+    </div>
+    <div class="slide__aside reveal">
+      <div class="aside-card">
+        <h4>Формат</h4>
+        <p class="big"><em>3</em> <span style="font-size:.28em;color:var(--text);font-family:var(--font-body);font-style:normal">.md + Figma</span></p>
+        <p style="margin-top:12px;font-size:13px;color:var(--text-dim);line-height:1.5">Документы с embedded Figma-примерами. Можно завернуть в лендинг или в Notion-страницу для клиентов.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 15. DIVIDER · HOW TO USE -->
+<section class="slide slide--divider">
+  <span class="slide__number">→</span>
+  <div class="slide__content reveal">
+    <p class="slide__label">Блок&nbsp;III</p>
+    <h2 class="slide__heading">Как этим<br><em>пользоваться</em></h2>
+    <p class="slide__body" style="margin-top:14px;max-width:34ch">Пять форматов, в которые можно упаковать одну и ту же историю — от твита до вебинара.</p>
+  </div>
+</section>
+
+<!-- 16. Content pipeline -->
+<section class="slide">
+  <p class="slide__label reveal">Контент-конвейер · одна история → пять форматов</p>
+  <h2 class="slide__heading reveal">Один файл из vault превращается<br>в пять маркетинговых артефактов.</h2>
+  <div class="pipeline reveal">
+    <div class="pipeline__step">
+      <div class="pipeline__num">01</div>
+      <div class="pipeline__name">Сырьё</div>
+      <div class="pipeline__desc">Markdown из спринта: journey, tracker, transcripts.</div>
+      <div class="pipeline__file">vault/.md</div>
+    </div>
+    <div class="pipeline__arrow"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M5 12h14m-4-4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="pipeline__step">
+      <div class="pipeline__num">02</div>
+      <div class="pipeline__name">Пост / Twit</div>
+      <div class="pipeline__desc">Цитата + один тезис + скрин схемы. TG, LinkedIn.</div>
+      <div class="pipeline__file">post.md</div>
+    </div>
+    <div class="pipeline__arrow"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M5 12h14m-4-4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="pipeline__step">
+      <div class="pipeline__num">03</div>
+      <div class="pipeline__name">Статья</div>
+      <div class="pipeline__desc">Редакторская обработка Architecture journey. Блог / Хабр.</div>
+      <div class="pipeline__file">article.html</div>
+    </div>
+    <div class="pipeline__arrow"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M5 12h14m-4-4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="pipeline__step">
+      <div class="pipeline__num">04</div>
+      <div class="pipeline__name">Демо</div>
+      <div class="pipeline__desc">Скринкаст + экспертный разбор. Для продаж и отдела.</div>
+      <div class="pipeline__file">demo.mp4</div>
+    </div>
+    <div class="pipeline__arrow"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M5 12h14m-4-4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="pipeline__step">
+      <div class="pipeline__num">05</div>
+      <div class="pipeline__name">Вебинар / talk</div>
+      <div class="pipeline__desc">Полный рассказ кейса с Q&A. Внешний ивент.</div>
+      <div class="pipeline__file">deck.key</div>
+    </div>
+  </div>
+</section>
+
+<!-- 17. Workflow rules -->
+<section class="slide slide--split">
+  <div class="slide__panels">
+    <div class="slide__panel slide__panel--primary">
+      <div class="panel-num">Правила игры</div>
+      <h3>Что берём<br>и что — нет.</h3>
+      <ul style="margin-top:18px">
+        <li><strong>Берём:</strong> всё, что лежит в «Сырье для Маркетинга»</li>
+        <li><strong>Не берём:</strong> транскрипты целиком — только цитаты с согласия</li>
+        <li><strong>Согласуем:</strong> любые имена клиентов, зарплаты, цифры бюджета</li>
+        <li><strong>Пингуем:</strong> Виталия перед публикацией любого кейса</li>
+      </ul>
+    </div>
+    <div class="slide__panel slide__panel--secondary">
+      <div class="panel-num">Ритм</div>
+      <h3>Еженедельно.</h3>
+      <ul style="margin-top:18px">
+        <li><strong>Понедельник:</strong> новая папка Sprint N / появляется после ретро</li>
+        <li><strong>Вторник:</strong> маркетинг читает, помечает интересное</li>
+        <li><strong>Среда:</strong> синк 30 минут — что берём в работу</li>
+        <li><strong>До конца недели:</strong> минимум 1 артефакт наружу</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 18. CLOSING / ASKS -->
+<section class="slide slide--closing">
+  <p class="slide__label reveal">Что нужно от маркетинга</p>
+  <h2 class="big reveal">Три <em>простых</em> шага,<br>чтобы это заработало.</h2>
+  <div class="asks">
+    <div class="ask reveal">
+      <div class="n">ASK 01</div>
+      <div class="t">Редактор на поток</div>
+      <p class="d">Один человек, который разбирает папку раз в неделю и выбирает, что тянуть в контент.</p>
+    </div>
+    <div class="ask reveal">
+      <div class="n">ASK 02</div>
+      <div class="t">Выбрать 1-й кейс</div>
+      <p class="d">Предлагаю Architecture journey — уже готов, драматичный разворот, видно «до / после».</p>
+    </div>
+    <div class="ask reveal">
+      <div class="n">ASK 03</div>
+      <div class="t">Договориться о ритме</div>
+      <p class="d">30 минут в среду на синк «что в работе». Первая встреча — на этой неделе.</p>
+    </div>
+  </div>
+  <p class="slide__subtitle reveal" style="margin-top:clamp(28px,5vh,56px)">→ Дальше всё как на слайде с конвейером: вытягиваем, упаковываем, публикуем.</p>
+</section>
+
+</div>
+
+<script>
+class SlideEngine{
+  constructor(){
+    this.deck=document.querySelector('.deck');
+    this.slides=[...document.querySelectorAll('.slide')];
+    this.current=0;this.total=this.slides.length;
+    this.buildChrome();this.bindEvents();this.observe();this.update();
+  }
+  buildChrome(){
+    var bar=document.createElement('div');bar.className='deck-progress';document.body.appendChild(bar);this.bar=bar;
+    var dots=document.createElement('div');dots.className='deck-dots';var self=this;
+    this.slides.forEach(function(_,i){var d=document.createElement('button');d.className='deck-dot';d.title='Slide '+(i+1);d.onclick=function(){self.goTo(i)};dots.appendChild(d)});
+    document.body.appendChild(dots);this.dots=[].slice.call(dots.children);
+    var ctr=document.createElement('div');ctr.className='deck-counter';document.body.appendChild(ctr);this.counter=ctr;
+    var hints=document.createElement('div');hints.className='deck-hints';hints.textContent='← → or scroll to navigate';document.body.appendChild(hints);this.hints=hints;
+    this.hintTimer=setTimeout(function(){hints.classList.add('faded')},4000);
+  }
+  bindEvents(){
+    var self=this;
+    document.addEventListener('keydown',function(e){
+      if(e.target.closest('input,textarea,[contenteditable]'))return;
+      if(['ArrowDown','ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();self.next()}
+      else if(['ArrowUp','ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();self.prev()}
+      else if(e.key==='Home'){e.preventDefault();self.goTo(0)}
+      else if(e.key==='End'){e.preventDefault();self.goTo(self.total-1)}
+      self.fadeHints();
+    });
+    var touchY;
+    this.deck.addEventListener('touchstart',function(e){touchY=e.touches[0].clientY},{passive:true});
+    this.deck.addEventListener('touchend',function(e){var dy=touchY-e.changedTouches[0].clientY;if(Math.abs(dy)>50){dy>0?self.next():self.prev()}});
+  }
+  observe(){
+    var self=this;
+    var obs=new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){if(entry.isIntersecting){entry.target.classList.add('visible');self.current=self.slides.indexOf(entry.target);self.update()}});
+    },{threshold:0.5});
+    this.slides.forEach(function(s){obs.observe(s)});
+  }
+  goTo(i){this.slides[Math.max(0,Math.min(i,this.total-1))].scrollIntoView({behavior:'smooth'})}
+  next(){if(this.current<this.total-1)this.goTo(this.current+1)}
+  prev(){if(this.current>0)this.goTo(this.current-1)}
+  update(){this.bar.style.width=((this.current+1)/this.total*100)+'%';var self=this;this.dots.forEach(function(d,i){d.classList.toggle('active',i===self.current)});this.counter.textContent=(this.current+1)+' / '+this.total}
+  fadeHints(){clearTimeout(this.hintTimer);this.hints.classList.add('faded')}
+}
+function autoFit(){
+  document.querySelectorAll('.slide__kpi-val').forEach(function(el){
+    if(el.scrollWidth>el.clientWidth){var s=el.clientWidth/el.scrollWidth;el.style.transform='scale('+s+')';el.style.transformOrigin='left top'}
+  });
+  document.querySelectorAll('.slide--quote blockquote').forEach(function(el){
+    var len=el.textContent.trim().length;
+    if(len>100){var scale=Math.max(0.5,100/len);var fs=parseFloat(getComputedStyle(el).fontSize);el.style.fontSize=Math.max(16,Math.round(fs*scale))+'px'}
+  });
+}
+document.addEventListener('DOMContentLoaded',function(){autoFit();new SlideEngine();});
+</script>
+</body>
+</html>
